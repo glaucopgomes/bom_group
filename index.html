@@ -42,6 +42,7 @@
                     const finalCsvContent = "data:text/csv;charset=utf-8," +  Papa.unparse(result);
                     const encodedUri = encodeURI(finalCsvContent);
                     fileInput.value = "";
+                    console.error(encodedUri);
                     window.open(encodedUri);
                 }
             });
