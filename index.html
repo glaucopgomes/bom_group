@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="papaparse.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <label for="csvFileInput">Escolha o arquivo:</label>
+        <input type="file" id="csvFileInput" name="csvFileInput" accept="text/csv">
+        </input>
+    </div>
+    <div>
+        <button onclick="process()">Processar</button>
+    </div>
+
+    <script>
+        function process() {
+            const fileInput = document.getElementById("csvFileInput");
+            if (fileInput.files.length === 0) {
+                alert("Escolha o arquivo.");
+                return;
+            }
+            Papa.parse(fileInput.files[0], {
+                header: true,
+                complete: function (parseResult) {
+                    const index = new Map();
+                    for (let i = 0; i < parseResult.data.length; i++) {
+                        const row = parseResult.data[i];
+                        if (row) {
+                            const indexedRow = index.get(row.Part);
+                            if (indexedRow) {
+                                indexedRow.RefDes = indexedRow.RefDes + "," + row.RefDes;
+                                indexedRow.Quantity = parseFloat(indexedRow.Quantity) + parseFloat(row.Quantity);
+                            } else {
+                                index.set(row.Part, row);
+                            }
+                        }
+                    }
+                    const result = Array.from(index.values());
+                    const finalCsvContent = "data:text/csv;charset=utf-8," +  Papa.unparse(result);
+                    const encodedUri = encodeURI(finalCsvContent);
+                    fileInput.value = "";
+                    window.open(encodedUri);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
