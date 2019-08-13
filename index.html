@@ -39,7 +39,7 @@
                         }
                     }
                     const result = Array.from(index.values());
-                    const finalCsvContent = "data:text/csv;charset=utf-8," +  Papa.unparse(result);
+                    const finalCsvContent = "data:application/vnd.ms-excel;charset=utf-8," +  Papa.unparse(result);
                     const encodedUri = encodeURI(finalCsvContent);
                     fileInput.value = "";
                     console.error(encodedUri);
