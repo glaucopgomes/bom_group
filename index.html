@@ -14,6 +14,7 @@
     <div>
         <button onclick="process()">Processar</button>
     </div>
+    <a id="downloadLink" download="bom.csv"></a>
 
     <script>
         function process() {
@@ -41,9 +42,11 @@
                     const result = Array.from(index.values());
                     const finalCsvContent = "data:application/vnd.ms-excel;charset=utf-8," +  Papa.unparse(result);
                     const encodedUri = encodeURI(finalCsvContent);
-                    fileInput.value = "";
                     console.error(encodedUri);
-                    window.open(encodedUri);
+                    fileInput.value = "";
+                    const downloadLink = document.getElementById("downloadLink");
+                    downloadLink.href = encodedUri;
+                    downloadLink.click();
                 }
             });
         }
