@@ -40,13 +40,19 @@
                         }
                     }
                     const result = Array.from(index.values());
-                    const finalCsvContent = "data:application/vnd.ms-excel;charset=utf-8," +  Papa.unparse(result);
-                    const encodedUri = encodeURI(finalCsvContent);
-                    console.error(encodedUri);
+                    const newCSV = Papa.unparse(result, {quotes: true, newline: "\n"});
+                    const finalFileContent = "data:application/vnd.ms-excel;base64," + btoa(newCSV);
+                    const encodedUri = encodeURI(finalFileContent);
                     fileInput.value = "";
                     const downloadLink = document.getElementById("downloadLink");
                     downloadLink.href = encodedUri;
                     downloadLink.click();
+                },
+                error: function (err, file, inputElem, reason) {
+                    console.log("err", err);
+                    console.log("file", file);
+                    console.log("inputElem", inputElem);
+                    console.log("reason", reason);
                 }
             });
         }
